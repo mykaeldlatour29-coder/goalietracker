@@ -1,14 +1,14 @@
-jsimport { initializeApp } from 'firebase/app';
+import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDWaAcREPEFt0Lco3og1x_Ad7E4LR3G-Zg",
-  authDomain: "goalie-tracking.firebaseapp.com",
-  projectId: "goalie-tracking",
-  storageBucket: "goalie-tracking.firebasestorage.app",
-  messagingSenderId: "417947012410",
-  appId: "1:417947012410:web:49bf3cf7ea208a331b5403"
+  apiKey: "VOTRE_API_KEY",
+  authDomain: "VOTRE_PROJECT.firebaseapp.com",
+  projectId: "VOTRE_PROJECT_ID",
+  storageBucket: "VOTRE_PROJECT.appspot.com",
+  messagingSenderId: "VOTRE_SENDER_ID",
+  appId: "VOTRE_APP_ID"
 };
 
 const app = initializeApp(firebaseConfig);
