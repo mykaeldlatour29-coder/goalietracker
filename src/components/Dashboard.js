@@ -5,9 +5,7 @@ import { collection, addDoc, getDocs, deleteDoc, doc, query, orderBy, where } fr
 import { auth, db } from '../firebase';
 
 const RED = '#CC1111';
-const G2 = '#1E1E1E';
-const G3 = '#2A2A2A';
-const LINE = '#2A2A2A';
+const LINE = '#e0e0e0';
 
 export default function Dashboard({ user }) {
   const nav = useNavigate();
@@ -72,8 +70,8 @@ export default function Dashboard({ user }) {
   const goalCount = (s) => (s.shots || []).filter(x => x.result === 'goal').length;
 
   return (
-    <div style={{ minHeight: '100vh', background: '#0D0D0D' }}>
-      <div style={{ background: '#111', borderBottom: '0.5px solid #222', padding: '0 1.5rem' }}>
+    <div style={{ minHeight: '100vh', background: '#f5f5f5' }}>
+      <div style={{ background: '#fff', borderBottom: '1px solid #e0e0e0', padding: '0 1.5rem' }}>
         <div style={{ maxWidth: 900, margin: '0 auto', display: 'flex', alignItems: 'center', height: 56 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
             <div style={{ width: 34, height: 34, background: RED, borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -85,24 +83,25 @@ export default function Dashboard({ user }) {
                 <line x1="1" y1="14" x2="21" y2="14" stroke="white" strokeWidth="1.3"/>
               </svg>
             </div>
-            <span style={{ fontWeight: 700, fontSize: 16, color: '#fff' }}>Goalie Tracker</span>
+            <span style={{ fontWeight: 700, fontSize: 16, color: '#111' }}>Goalie Tracker</span>
           </div>
           <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 8 }}>
-            <span style={{ fontSize: 12, color: '#555' }}>{user.email}</span>
+            <span style={{ fontSize: 12, color: '#999' }}>{user.email}</span>
             <button onClick={() => signOut(auth)} style={{
-              background: 'transparent', border: '0.5px solid #333', borderRadius: 6,
-              padding: '5px 12px', fontSize: 12, color: '#888', cursor: 'pointer'
+              background: 'transparent', border: '1px solid #e0e0e0', borderRadius: 6,
+              padding: '5px 12px', fontSize: 12, color: '#666', cursor: 'pointer'
             }}>Déconnexion</button>
           </div>
         </div>
       </div>
 
       <div style={{ maxWidth: 900, margin: '0 auto', padding: '1.5rem 1rem' }}>
-        <div style={{ display: 'flex', gap: 4, marginBottom: 20, background: G2, borderRadius: 10, padding: 4, width: 'fit-content' }}>
+        <div style={{ display: 'flex', gap: 4, marginBottom: 20, background: '#e0e0e0', borderRadius: 10, padding: 4, width: 'fit-content' }}>
           {['sessions', 'gardiens'].map(t => (
             <button key={t} onClick={() => setTab(t)} style={{
               padding: '7px 18px', borderRadius: 7, border: 'none', fontSize: 13, fontWeight: 500,
-              background: tab === t ? RED : 'transparent', color: tab === t ? '#fff' : '#666', cursor: 'pointer'
+              background: tab === t ? RED : 'transparent',
+              color: tab === t ? '#fff' : '#666', cursor: 'pointer'
             }}>{t === 'sessions' ? 'Séances' : 'Gardiens'}</button>
           ))}
         </div>
@@ -110,7 +109,7 @@ export default function Dashboard({ user }) {
         {tab === 'sessions' && (
           <>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
-              <div style={{ fontSize: 18, fontWeight: 600, color: '#fff' }}>Séances d'entraînement</div>
+              <div style={{ fontSize: 18, fontWeight: 600, color: '#111' }}>Séances d'entraînement</div>
               <button onClick={() => setShowNew(true)} style={{
                 background: RED, color: '#fff', border: 'none', borderRadius: 8,
                 padding: '9px 18px', fontSize: 13, fontWeight: 600, cursor: 'pointer'
@@ -118,42 +117,42 @@ export default function Dashboard({ user }) {
             </div>
 
             {loading ? (
-              <div style={{ color: '#444', fontSize: 13, padding: '2rem', textAlign: 'center' }}>Chargement...</div>
+              <div style={{ color: '#999', fontSize: 13, padding: '2rem', textAlign: 'center' }}>Chargement...</div>
             ) : sessions.length === 0 ? (
-              <div style={{ background: G2, border: '0.5px solid #2A2A2A', borderRadius: 12, padding: '3rem', textAlign: 'center' }}>
+              <div style={{ background: '#fff', border: '1px solid #e0e0e0', borderRadius: 12, padding: '3rem', textAlign: 'center' }}>
                 <div style={{ fontSize: 36, marginBottom: 12 }}>🏒</div>
-                <div style={{ color: '#555', fontSize: 14 }}>Aucune séance enregistrée.<br />Créez votre première séance pour commencer.</div>
+                <div style={{ color: '#999', fontSize: 14 }}>Aucune séance enregistrée.<br />Créez votre première séance pour commencer.</div>
               </div>
             ) : (
               <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
                 {sessions.map(s => (
                   <div key={s.id} onClick={() => nav('/session/' + s.id)} style={{
-                    background: G2, border: '0.5px solid ' + LINE, borderRadius: 12,
+                    background: '#fff', border: '1px solid ' + LINE, borderRadius: 12,
                     padding: '1rem 1.25rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 16,
                   }}
                     onMouseEnter={e => e.currentTarget.style.borderColor = RED}
                     onMouseLeave={e => e.currentTarget.style.borderColor = LINE}
                   >
-                    <div style={{ width: 42, height: 42, background: '#1A1A1A', borderRadius: 8, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                    <div style={{ width: 42, height: 42, background: '#f5f5f5', borderRadius: 8, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                       <div style={{ fontSize: 14, fontWeight: 700, color: RED }}>{(s.shots || []).length}</div>
-                      <div style={{ fontSize: 9, color: '#555', textTransform: 'uppercase' }}>tirs</div>
+                      <div style={{ fontSize: 9, color: '#999', textTransform: 'uppercase' }}>tirs</div>
                     </div>
                     <div style={{ flex: 1, minWidth: 0 }}>
-                      <div style={{ fontWeight: 600, fontSize: 14, color: '#fff', marginBottom: 3 }}>{s.goalie}</div>
-                      <div style={{ fontSize: 12, color: '#555' }}>{new Date(s.date).toLocaleDateString('fr-CA', { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' })}</div>
+                      <div style={{ fontWeight: 600, fontSize: 14, color: '#111', marginBottom: 3 }}>{s.goalie}</div>
+                      <div style={{ fontSize: 12, color: '#999' }}>{new Date(s.date).toLocaleDateString('fr-CA', { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' })}</div>
                     </div>
                     <div style={{ display: 'flex', gap: 16, alignItems: 'center' }}>
                       <div style={{ textAlign: 'center' }}>
-                        <div style={{ fontSize: 16, fontWeight: 700, color: '#fff' }}>{svPct(s)}</div>
-                        <div style={{ fontSize: 10, color: '#555' }}>SV%</div>
+                        <div style={{ fontSize: 16, fontWeight: 700, color: '#111' }}>{svPct(s)}</div>
+                        <div style={{ fontSize: 10, color: '#999' }}>SV%</div>
                       </div>
                       <div style={{ textAlign: 'center' }}>
-                        <div style={{ fontSize: 16, fontWeight: 700, color: goalCount(s) > 0 ? RED : '#555' }}>{goalCount(s)}</div>
-                        <div style={{ fontSize: 10, color: '#555' }}>buts</div>
+                        <div style={{ fontSize: 16, fontWeight: 700, color: goalCount(s) > 0 ? RED : '#999' }}>{goalCount(s)}</div>
+                        <div style={{ fontSize: 10, color: '#999' }}>buts</div>
                       </div>
                       <button onClick={e => deleteSession(s.id, e)} style={{
-                        background: 'transparent', border: '0.5px solid #333', borderRadius: 6,
-                        padding: '5px 10px', fontSize: 12, color: '#555', cursor: 'pointer'
+                        background: 'transparent', border: '1px solid #e0e0e0', borderRadius: 6,
+                        padding: '5px 10px', fontSize: 12, color: '#999', cursor: 'pointer'
                       }}>Suppr.</button>
                     </div>
                   </div>
@@ -165,13 +164,13 @@ export default function Dashboard({ user }) {
 
         {tab === 'gardiens' && (
           <>
-            <div style={{ fontSize: 18, fontWeight: 600, color: '#fff', marginBottom: 16 }}>Gardiens</div>
+            <div style={{ fontSize: 18, fontWeight: 600, color: '#111', marginBottom: 16 }}>Gardiens</div>
             <div style={{ display: 'flex', gap: 8, marginBottom: 20 }}>
               <input value={newGoalie} onChange={e => setNewGoalie(e.target.value)}
                 onKeyDown={e => e.key === 'Enter' && addGoalie()}
                 placeholder="Nom du gardien..." style={{
-                  flex: 1, background: G2, border: '0.5px solid #333', borderRadius: 8,
-                  padding: '10px 14px', fontSize: 14, color: '#fff', outline: 'none'
+                  flex: 1, background: '#fff', border: '1px solid #e0e0e0', borderRadius: 8,
+                  padding: '10px 14px', fontSize: 14, color: '#111', outline: 'none'
                 }} />
               <button onClick={addGoalie} style={{
                 background: RED, color: '#fff', border: 'none', borderRadius: 8,
@@ -186,7 +185,7 @@ export default function Dashboard({ user }) {
                 const pct = totalShots > 0 ? ((totalSaves / totalShots) * 100).toFixed(1) + '%' : '—';
                 return (
                   <div key={g.id} style={{
-                    background: G2, border: '0.5px solid ' + LINE, borderRadius: 12,
+                    background: '#fff', border: '1px solid ' + LINE, borderRadius: 12,
                     padding: '1rem 1.25rem', display: 'flex', alignItems: 'center', gap: 16
                   }}>
                     <div style={{
@@ -195,19 +194,19 @@ export default function Dashboard({ user }) {
                       fontSize: 16, fontWeight: 700, color: '#fff', flexShrink: 0
                     }}>{g.name[0].toUpperCase()}</div>
                     <div style={{ flex: 1 }}>
-                      <div style={{ fontWeight: 600, color: '#fff', fontSize: 14 }}>{g.name}</div>
-                      <div style={{ fontSize: 12, color: '#555', marginTop: 2 }}>{gSessions.length} séance(s) — {totalShots} tirs</div>
+                      <div style={{ fontWeight: 600, color: '#111', fontSize: 14 }}>{g.name}</div>
+                      <div style={{ fontSize: 12, color: '#999', marginTop: 2 }}>{gSessions.length} séance(s) — {totalShots} tirs</div>
                     </div>
-                    <div style={{ fontSize: 16, fontWeight: 700, color: '#fff' }}>{pct} <span style={{ fontSize: 11, color: '#555', fontWeight: 400 }}>SV%</span></div>
+                    <div style={{ fontSize: 16, fontWeight: 700, color: '#111' }}>{pct} <span style={{ fontSize: 11, color: '#999', fontWeight: 400 }}>SV%</span></div>
                     <button onClick={() => deleteGoalie(g.id)} style={{
-                      background: 'transparent', border: '0.5px solid #333', borderRadius: 6,
-                      padding: '5px 10px', fontSize: 12, color: '#555', cursor: 'pointer'
+                      background: 'transparent', border: '1px solid #e0e0e0', borderRadius: 6,
+                      padding: '5px 10px', fontSize: 12, color: '#999', cursor: 'pointer'
                     }}>Suppr.</button>
                   </div>
                 );
               })}
               {goalies.length === 0 && (
-                <div style={{ color: '#444', fontSize: 13, textAlign: 'center', padding: '2rem' }}>Aucun gardien enregistré.</div>
+                <div style={{ color: '#999', fontSize: 13, textAlign: 'center', padding: '2rem' }}>Aucun gardien enregistré.</div>
               )}
             </div>
           </>
@@ -216,40 +215,41 @@ export default function Dashboard({ user }) {
 
       {showNew && (
         <div style={{
-          position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.8)',
+          position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)',
           display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 16, zIndex: 100
         }} onClick={() => setShowNew(false)}>
           <div style={{
-            background: '#161616', border: '0.5px solid #2A2A2A', borderRadius: 16,
+            background: '#fff', border: '1px solid #e0e0e0', borderRadius: 16,
             padding: '1.5rem', width: '100%', maxWidth: 420
           }} onClick={e => e.stopPropagation()}>
-            <div style={{ fontSize: 16, fontWeight: 600, color: '#fff', marginBottom: 20 }}>Nouvelle séance</div>
+            <div style={{ fontSize: 16, fontWeight: 600, color: '#111', marginBottom: 20 }}>Nouvelle séance</div>
 
-            <label style={{ display: 'block', fontSize: 11, color: '#666', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.06em' }}>Gardien</label>
+            <label style={{ display: 'block', fontSize: 11, color: '#999', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.06em' }}>Gardien</label>
             <select value={form.goalie} onChange={e => setForm({ ...form, goalie: e.target.value })} style={{
-              width: '100%', background: G2, border: '0.5px solid #333', borderRadius: 8,
-              padding: '10px 14px', fontSize: 14, color: form.goalie ? '#fff' : '#555',
+              width: '100%', background: '#f8f8f8', border: '1px solid #e0e0e0', borderRadius: 8,
+              padding: '10px 14px', fontSize: 14, color: form.goalie ? '#111' : '#999',
               marginBottom: 14, outline: 'none'
             }}>
               <option value="">Sélectionner un gardien...</option>
               {goalies.map(g => <option key={g.id} value={g.name}>{g.name}</option>)}
             </select>
 
-            <label style={{ display: 'block', fontSize: 11, color: '#666', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.06em' }}>Date</label>
+            <label style={{ display: 'block', fontSize: 11, color: '#999', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.06em' }}>Date</label>
             <input type="date" value={form.date} onChange={e => setForm({ ...form, date: e.target.value })} style={{
-              width: '100%', background: G2, border: '0.5px solid #333', borderRadius: 8,
-              padding: '10px 14px', fontSize: 14, color: '#fff', marginBottom: 14, outline: 'none'
+              width: '100%', background: '#f8f8f8', border: '1px solid #e0e0e0', borderRadius: 8,
+              padding: '10px 14px', fontSize: 14, color: '#111', marginBottom: 14, outline: 'none'
             }} />
 
-            <label style={{ display: 'block', fontSize: 11, color: '#666', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.06em' }}>Notes (optionnel)</label>
-            <input value={form.notes} onChange={e => setForm({ ...form, notes: e.target.value })} placeholder="Ex: Tirs de la pointe, forehand..." style={{
-              width: '100%', background: G2, border: '0.5px solid #333', borderRadius: 8,
-              padding: '10px 14px', fontSize: 14, color: '#fff', marginBottom: 20, outline: 'none'
-            }} />
+            <label style={{ display: 'block', fontSize: 11, color: '#999', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.06em' }}>Notes (optionnel)</label>
+            <input value={form.notes} onChange={e => setForm({ ...form, notes: e.target.value })}
+              placeholder="Ex: Tirs de la pointe, forehand..." style={{
+                width: '100%', background: '#f8f8f8', border: '1px solid #e0e0e0', borderRadius: 8,
+                padding: '10px 14px', fontSize: 14, color: '#111', marginBottom: 20, outline: 'none'
+              }} />
 
             <div style={{ display: 'flex', gap: 8 }}>
               <button onClick={() => setShowNew(false)} style={{
-                flex: 1, background: 'transparent', border: '0.5px solid #333',
+                flex: 1, background: 'transparent', border: '1px solid #e0e0e0',
                 borderRadius: 8, padding: 10, fontSize: 13, color: '#666', cursor: 'pointer'
               }}>Annuler</button>
               <button onClick={createSession} disabled={!form.goalie || !form.date} style={{
