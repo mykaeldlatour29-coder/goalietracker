@@ -4,9 +4,9 @@ import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import { db } from '../firebase';
 
 const RED = '#CC1111';
-const G1 = '#161616';
-const G2 = '#1E1E1E';
-const G3 = '#2A2A2A';
+const G1 = '#ffffff';
+const G2 = '#f8f8f8';
+const G3 = '#e0e0e0';
 
 const ZONES = {
   TL: { label: 'Haut gauche', rect: [34, 24, 73, 42] },
@@ -19,7 +19,7 @@ const ZONES = {
 
 function lerp(a, b, t) { return a + (b - a) * t; }
 function zoneColor(ratio) {
-  if (ratio <= 0) return '#1A1A1A';
+  if (ratio <= 0) return '#f0f0f0';
   const r1=[29,158,117], r2=[250,180,50], r3=[204,17,17];
   let r, g, b;
   if (ratio < 0.5) {
@@ -120,57 +120,57 @@ export default function Session({ user }) {
   const step = !pRink ? 0 : !pNet ? 1 : !pResult ? 2 : 3;
 
   if (loading) return (
-    <div style={{ height: '100vh', background: '#0D0D0D', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#555', fontSize: 13 }}>
+    <div style={{ height: '100vh', background: '#f5f5f5', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#999', fontSize: 13 }}>
       Chargement...
     </div>
   );
 
   return (
-    <div style={{ minHeight: '100vh', background: '#0D0D0D' }}>
-      <div style={{ background: '#111', borderBottom: '0.5px solid #222', padding: '0 1.5rem' }}>
+    <div style={{ minHeight: '100vh', background: '#f5f5f5' }}>
+      <div style={{ background: '#fff', borderBottom: '1px solid #e0e0e0', padding: '0 1.5rem' }}>
         <div style={{ maxWidth: 960, margin: '0 auto', display: 'flex', alignItems: 'center', height: 56, gap: 12 }}>
           <button onClick={() => nav('/')} style={{
-            background: G3, border: 'none', borderRadius: 6,
-            padding: '6px 12px', fontSize: 12, color: '#888', cursor: 'pointer'
+            background: '#f0f0f0', border: 'none', borderRadius: 6,
+            padding: '6px 12px', fontSize: 12, color: '#666', cursor: 'pointer'
           }}>← Retour</button>
-          <div style={{ width: '0.5px', height: 20, background: '#333' }} />
+          <div style={{ width: '1px', height: 20, background: '#e0e0e0' }} />
           <div>
-            <div style={{ fontWeight: 700, fontSize: 14, color: '#fff' }}>{session?.goalie}</div>
-            <div style={{ fontSize: 11, color: '#555' }}>{session?.date && new Date(session.date).toLocaleDateString('fr-CA', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</div>
+            <div style={{ fontWeight: 700, fontSize: 14, color: '#111' }}>{session?.goalie}</div>
+            <div style={{ fontSize: 11, color: '#999' }}>{session?.date && new Date(session.date).toLocaleDateString('fr-CA', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</div>
           </div>
-          {session?.notes && <div style={{ fontSize: 12, color: '#555', marginLeft: 8 }}>— {session.notes}</div>}
-          <div style={{ marginLeft: 'auto', fontSize: 12, color: saving ? RED : '#555' }}>{saving ? 'Sauvegarde...' : 'Sauvegardé'}</div>
+          {session?.notes && <div style={{ fontSize: 12, color: '#999', marginLeft: 8 }}>— {session.notes}</div>}
+          <div style={{ marginLeft: 'auto', fontSize: 12, color: saving ? RED : '#99' }}>{saving ? 'Sauvegarde...' : 'Sauvegardé ✓'}</div>
         </div>
       </div>
 
       <div style={{ maxWidth: 960, margin: '0 auto', padding: '1rem' }}>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, minmax(0,1fr))', gap: 8, marginBottom: 16 }}>
           {[
-            { label: 'Tirs totaux', val: total, color: '#fff' },
-            { label: '% Arrêt', val: svPct !== null ? svPct + '%' : '—', color: svPct >= 90 ? '#1D9E75' : svPct >= 80 ? '#EF9F27' : svPct !== null ? RED : '#fff' },
+            { label: 'Tirs totaux', val: total, color: '#111' },
+            { label: '% Arrêt', val: svPct !== null ? svPct + '%' : '—', color: svPct >= 90 ? '#1D9E75' : svPct >= 80 ? '#EF9F27' : svPct !== null ? RED : '#111' },
             { label: 'Arrêts', val: saves, color: '#1D9E75' },
-            { label: 'Buts alloués', val: goals, color: goals > 0 ? RED : '#555' },
+            { label: 'Buts alloués', val: goals, color: goals > 0 ? RED : '#999' },
           ].map(({ label, val, color }) => (
-            <div key={label} style={{ background: G1, border: '0.5px solid #222', borderRadius: 10, padding: '12px', textAlign: 'center' }}>
+            <div key={label} style={{ background: '#fff', border: '1px solid #e0e0e0', borderRadius: 10, padding: '12px', textAlign: 'center' }}>
               <div style={{ fontSize: 24, fontWeight: 700, color }}>{val}</div>
-              <div style={{ fontSize: 10, color: '#555', textTransform: 'uppercase', letterSpacing: '0.06em', marginTop: 2 }}>{label}</div>
+              <div style={{ fontSize: 10, color: '#999', textTransform: 'uppercase', letterSpacing: '0.06em', marginTop: 2 }}>{label}</div>
             </div>
           ))}
         </div>
 
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
-          <div style={{ background: G1, border: '0.5px solid #222', borderRadius: 14, padding: '1rem' }}>
-            <div style={{ fontSize: 11, color: '#666', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 10, display: 'flex', alignItems: 'center', gap: 6 }}>
+          <div style={{ background: G1, border: '1px solid #e0e0e0', borderRadius: 14, padding: '1rem' }}>
+            <div style={{ fontSize: 11, color: '#999', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 10, display: 'flex', alignItems: 'center', gap: 6 }}>
               <span style={{ width: 3, height: 12, background: RED, borderRadius: 2, display: 'inline-block' }} />
               Enregistrer un tir
             </div>
 
             <div style={{ display: 'flex', gap: 6, marginBottom: 8 }}>
               {[0,1,2].map(i => (
-                <div key={i} style={{ flex: 1, height: 3, borderRadius: 2, background: i < step ? (step === 3 ? '#1D9E75' : RED) : i === step ? RED : '#2A2A2A' }} />
+                <div key={i} style={{ flex: 1, height: 3, borderRadius: 2, background: i < step ? (step === 3 ? '#1D9E75' : RED) : i === step ? RED : '#e0e0e0' }} />
               ))}
             </div>
-            <div style={{ fontSize: 12, color: '#666', marginBottom: 10 }}>
+            <div style={{ fontSize: 12, color: '#999', marginBottom: 10 }}>
               {step === 0 && 'Étape 1 — Cliquez sur la patinoire (origine)'}
               {step === 1 && 'Étape 2 — Cliquez sur le filet (destination)'}
               {step === 2 && 'Étape 3 — Résultat du tir'}
@@ -179,8 +179,8 @@ export default function Session({ user }) {
 
             <div style={{ position: 'relative', marginBottom: 10 }}>
               <svg ref={rinkRef} viewBox="0 0 280 160" onClick={handleRinkClick}
-                style={{ width: '100%', cursor: 'crosshair', border: '0.5px solid #2A2A2A', borderRadius: 8, display: 'block' }}>
-                <rect x="2" y="2" width="276" height="156" rx="22" fill="#0A1928" stroke="#1E2A38" strokeWidth="1"/>
+                style={{ width: '100%', cursor: 'crosshair', border: '1px solid #e0e0e0', borderRadius: 8, display: 'block' }}>
+                <rect x="2" y="2" width="276" height="156" rx="22" fill="#E8F4F8" stroke="#ccc" strokeWidth="1"/>
                 <line x1="140" y1="2" x2="140" y2="158" stroke="#CC1111" strokeWidth="1.5" opacity="0.4"/>
                 <line x1="93" y1="2" x2="93" y2="158" stroke="#2255AA" strokeWidth="1.5" opacity="0.5"/>
                 <line x1="187" y1="2" x2="187" y2="158" stroke="#2255AA" strokeWidth="1.5" opacity="0.5"/>
@@ -192,44 +192,44 @@ export default function Session({ user }) {
                     <circle cx={cx} cy={cy} r="2" fill="#CC1111" opacity="0.4"/>
                   </g>
                 ))}
-                <rect x="2" y="62" width="10" height="36" fill="#ddd" stroke="#555" strokeWidth="1" rx="2"/>
-                <rect x="268" y="62" width="10" height="36" fill="#ddd" stroke="#555" strokeWidth="1" rx="2"/>
+                <rect x="2" y="62" width="10" height="36" fill="#fff" stroke="#999" strokeWidth="1" rx="2"/>
+                <rect x="268" y="62" width="10" height="36" fill="#fff" stroke="#999" strokeWidth="1" rx="2"/>
                 <path d="M12 62 Q30 62 30 80 Q30 98 12 98" fill="rgba(204,17,17,0.07)" stroke="#CC1111" strokeWidth="1"/>
                 <path d="M268 62 Q250 62 250 80 Q250 98 268 98" fill="rgba(204,17,17,0.07)" stroke="#CC1111" strokeWidth="1"/>
                 <text x="50" y="153" fontSize="7" fill="#2255AA" opacity="0.7" textAnchor="middle">Zone de tir</text>
                 <text x="230" y="153" fontSize="7" fill="#2255AA" opacity="0.7" textAnchor="middle">Gardien défend</text>
                 {shots.map(s => (
                   <circle key={s.id} cx={s.rink.x} cy={s.rink.y} r="4"
-                    fill={s.result === 'goal' ? '#CC1111' : '#1D9E75'} stroke="#111" strokeWidth="1" opacity="0.7"/>
+                    fill={s.result === 'goal' ? '#CC1111' : '#1D9E75'} stroke="#fff" strokeWidth="1" opacity="0.8"/>
                 ))}
                 {pRink && <circle cx={pRink.x} cy={pRink.y} r="5" fill="#FF8800" stroke="white" strokeWidth="1.5"/>}
               </svg>
             </div>
 
-            <div style={{ fontSize: 11, color: '#555', marginBottom: 6 }}>Destination du tir :</div>
-            <svg viewBox="0 0 280 115" style={{ width: '100%', background: '#0A0A0A', borderRadius: 8, border: '0.5px solid #2A2A2A', display: 'block', marginBottom: 10 }}>
-              <rect x="0" y="98" width="280" height="17" fill="#0A1928"/>
+            <div style={{ fontSize: 11, color: '#999', marginBottom: 6 }}>Destination du tir :</div>
+            <svg viewBox="0 0 280 115" style={{ width: '100%', background: '#f8f8f8', borderRadius: 8, border: '1px solid #e0e0e0', display: 'block', marginBottom: 10 }}>
+              <rect x="0" y="98" width="280" height="17" fill="#E8F4F8"/>
               <rect x="28" y="14" width="6" height="86" fill={RED} rx="2"/>
               <rect x="246" y="14" width="6" height="86" fill={RED} rx="2"/>
               <rect x="28" y="14" width="224" height="6" fill={RED} rx="2"/>
-              <rect x="34" y="20" width="212" height="78" fill="rgba(255,255,255,0.02)" stroke="#222" strokeWidth="0.5"/>
-              <line x1="107" y1="20" x2="107" y2="98" stroke="#2A2A2A" strokeWidth="1" strokeDasharray="3,3"/>
-              <line x1="173" y1="20" x2="173" y2="98" stroke="#2A2A2A" strokeWidth="1" strokeDasharray="3,3"/>
-              <line x1="34" y1="59" x2="246" y2="59" stroke="#2A2A2A" strokeWidth="1" strokeDasharray="3,3"/>
+              <rect x="34" y="20" width="212" height="78" fill="rgba(255,255,255,0.8)" stroke="#ddd" strokeWidth="0.5"/>
+              <line x1="107" y1="20" x2="107" y2="98" stroke="#ddd" strokeWidth="1" strokeDasharray="3,3"/>
+              <line x1="173" y1="20" x2="173" y2="98" stroke="#ddd" strokeWidth="1" strokeDasharray="3,3"/>
+              <line x1="34" y1="59" x2="246" y2="59" stroke="#ddd" strokeWidth="1" strokeDasharray="3,3"/>
               {Object.entries(ZONES).map(([zid, { rect: [rx, ry, rw, rh] }]) => {
                 const isSelected = pNet === zid;
                 const shotCount = shots.filter(s => s.net === zid).length;
                 return (
                   <g key={zid}>
                     <rect x={rx} y={ry} width={rw} height={rh}
-                      fill={isSelected ? 'rgba(204,17,17,0.4)' : 'transparent'}
+                      fill={isSelected ? 'rgba(204,17,17,0.2)' : 'transparent'}
                       style={{ cursor: pRink ? 'pointer' : 'default' }}
                       onClick={() => handleZoneClick(zid)}
-                      onMouseEnter={e => { if (pRink) e.target.setAttribute('fill', 'rgba(204,17,17,0.2)'); }}
+                      onMouseEnter={e => { if (pRink) e.target.setAttribute('fill', 'rgba(204,17,17,0.15)'); }}
                       onMouseLeave={e => { if (!isSelected) e.target.setAttribute('fill', 'transparent'); }}
                     />
-                    <text x={rx + rw/2} y={ry + rh/2 - 5} textAnchor="middle" fontSize="9" fill="rgba(255,255,255,0.35)" style={{ pointerEvents: 'none' }}>{zid}</text>
-                    {shotCount > 0 && <text x={rx + rw/2} y={ry + rh/2 + 8} textAnchor="middle" fontSize="10" fill="rgba(255,255,255,0.6)" style={{ pointerEvents: 'none' }}>{shotCount}</text>}
+                    <text x={rx + rw/2} y={ry + rh/2 - 5} textAnchor="middle" fontSize="9" fill="#aaa" style={{ pointerEvents: 'none' }}>{zid}</text>
+                    {shotCount > 0 && <text x={rx + rw/2} y={ry + rh/2 + 8} textAnchor="middle" fontSize="10" fill="#666" style={{ pointerEvents: 'none' }}>{shotCount}</text>}
                   </g>
                 );
               })}
@@ -238,7 +238,7 @@ export default function Session({ user }) {
                 const [rx, ry, rw, rh] = ZONES[s.net].rect;
                 const cx = rx + rw / 2 + (Math.sin(s.id) * 12);
                 const cy = ry + rh / 2 + (Math.cos(s.id) * 8);
-                return <circle key={s.id} cx={cx} cy={cy} r="4" fill={s.result === 'goal' ? RED : '#1D9E75'} stroke="#111" strokeWidth="1" opacity="0.85"/>;
+                return <circle key={s.id} cx={cx} cy={cy} r="4" fill={s.result === 'goal' ? RED : '#1D9E75'} stroke="#fff" strokeWidth="1" opacity="0.85"/>;
               })}
             </svg>
 
@@ -246,24 +246,24 @@ export default function Session({ user }) {
               <button onClick={() => handleResult('goal')} style={{
                 flex: 1, padding: '9px', borderRadius: 8, border: '1px solid',
                 fontSize: 13, fontWeight: 600, cursor: pRink && pNet ? 'pointer' : 'not-allowed',
-                borderColor: pResult === 'goal' ? RED : '#333',
-                background: pResult === 'goal' ? RED : 'transparent',
-                color: pResult === 'goal' ? '#fff' : '#666',
+                borderColor: pResult === 'goal' ? RED : '#e0e0e0',
+                background: pResult === 'goal' ? RED : '#fff',
+                color: pResult === 'goal' ? '#fff' : '#999',
                 opacity: pRink && pNet ? 1 : 0.4
               }}>But</button>
               <button onClick={() => handleResult('save')} style={{
                 flex: 1, padding: '9px', borderRadius: 8, border: '1px solid',
                 fontSize: 13, fontWeight: 600, cursor: pRink && pNet ? 'pointer' : 'not-allowed',
-                borderColor: pResult === 'save' ? '#1D9E75' : '#333',
-                background: pResult === 'save' ? '#1D9E75' : 'transparent',
-                color: pResult === 'save' ? '#fff' : '#666',
+                borderColor: pResult === 'save' ? '#1D9E75' : '#e0e0e0',
+                background: pResult === 'save' ? '#1D9E75' : '#fff',
+                color: pResult === 'save' ? '#fff' : '#999',
                 opacity: pRink && pNet ? 1 : 0.4
               }}>Arrêt</button>
             </div>
             <button onClick={addShot} disabled={!pRink || !pNet || !pResult} style={{
               width: '100%', marginTop: 8, padding: '11px', borderRadius: 8,
-              background: pRink && pNet && pResult ? RED : G3,
-              color: pRink && pNet && pResult ? '#fff' : '#444',
+              background: pRink && pNet && pResult ? RED : '#e0e0e0',
+              color: pRink && pNet && pResult ? '#fff' : '#999',
               border: 'none', fontSize: 13, fontWeight: 700,
               cursor: pRink && pNet && pResult ? 'pointer' : 'not-allowed',
               textTransform: 'uppercase', letterSpacing: '0.06em'
@@ -271,12 +271,12 @@ export default function Session({ user }) {
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-            <div style={{ background: G1, border: '0.5px solid #222', borderRadius: 14, padding: '1rem' }}>
-              <div style={{ fontSize: 11, color: '#666', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 10, display: 'flex', alignItems: 'center', gap: 6 }}>
+            <div style={{ background: G1, border: '1px solid #e0e0e0', borderRadius: 14, padding: '1rem' }}>
+              <div style={{ fontSize: 11, color: '#999', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 10, display: 'flex', alignItems: 'center', gap: 6 }}>
                 <span style={{ width: 3, height: 12, background: RED, borderRadius: 2, display: 'inline-block' }} />
                 Zones du filet
               </div>
-              <svg viewBox="0 0 280 100" style={{ width: '100%', background: '#0A0A0A', borderRadius: 8, display: 'block' }}>
+              <svg viewBox="0 0 280 100" style={{ width: '100%', background: '#f8f8f8', borderRadius: 8, display: 'block' }}>
                 <rect x="28" y="4" width="6" height="76" fill={RED} rx="2"/>
                 <rect x="246" y="4" width="6" height="76" fill={RED} rx="2"/>
                 <rect x="28" y="4" width="224" height="5" fill={RED} rx="2"/>
@@ -290,48 +290,48 @@ export default function Session({ user }) {
                     <g key={zid}>
                       <rect x={rx} y={adj_ry + 9} width={rw} height={rh} fill={col} rx="2"/>
                       <text x={rx + rw/2} y={adj_ry + 9 + rh/2 + 4} textAnchor="middle" fontSize="10"
-                        fill={ratio > 0.5 ? 'rgba(255,255,255,0.9)' : 'rgba(255,255,255,0.5)'} style={{ pointerEvents: 'none' }}>
+                        fill={ratio > 0.3 ? '#fff' : '#999'} style={{ pointerEvents: 'none' }}>
                         {label}
                       </text>
                     </g>
                   );
                 })}
-                <text x="70" y="95" textAnchor="middle" fontSize="8" fill="#444">Gauche</text>
-                <text x="140" y="95" textAnchor="middle" fontSize="8" fill="#444">Centre</text>
-                <text x="210" y="95" textAnchor="middle" fontSize="8" fill="#444">Droite</text>
+                <text x="70" y="95" textAnchor="middle" fontSize="8" fill="#aaa">Gauche</text>
+                <text x="140" y="95" textAnchor="middle" fontSize="8" fill="#aaa">Centre</text>
+                <text x="210" y="95" textAnchor="middle" fontSize="8" fill="#aaa">Droite</text>
               </svg>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 8, fontSize: 11, color: '#444' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 8, fontSize: 11, color: '#aaa' }}>
                 <span>Arrêt</span>
                 <div style={{ flex: 1, height: 5, borderRadius: 3, background: 'linear-gradient(to right, #1D9E75, #EF9F27, #CC1111)' }} />
                 <span>But</span>
               </div>
             </div>
 
-            <div style={{ background: G1, border: '0.5px solid #222', borderRadius: 14, padding: '1rem', flex: 1 }}>
-              <div style={{ fontSize: 11, color: '#666', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 10, display: 'flex', alignItems: 'center', gap: 6 }}>
+            <div style={{ background: G1, border: '1px solid #e0e0e0', borderRadius: 14, padding: '1rem', flex: 1 }}>
+              <div style={{ fontSize: 11, color: '#999', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 10, display: 'flex', alignItems: 'center', gap: 6 }}>
                 <span style={{ width: 3, height: 12, background: RED, borderRadius: 2, display: 'inline-block' }} />
                 Historique ({total} tir{total !== 1 ? 's' : ''})
               </div>
               <div style={{ maxHeight: 280, overflowY: 'auto' }}>
                 {shots.length === 0 ? (
-                  <div style={{ color: '#333', fontSize: 13, textAlign: 'center', padding: '1.5rem' }}>Aucun tir enregistré.</div>
+                  <div style={{ color: '#ccc', fontSize: 13, textAlign: 'center', padding: '1.5rem' }}>Aucun tir enregistré.</div>
                 ) : [...shots].reverse().map(s => (
                   <div key={s.id} style={{
                     display: 'flex', alignItems: 'center', gap: 8,
-                    padding: '7px 0', borderBottom: '0.5px solid #1A1A1A', fontSize: 12
+                    padding: '7px 0', borderBottom: '1px solid #f0f0f0', fontSize: 12
                   }}>
                     <div style={{ width: 8, height: 8, borderRadius: '50%', background: s.result === 'goal' ? RED : '#1D9E75', flexShrink: 0 }} />
-                    <span style={{ fontWeight: 600, color: s.result === 'goal' ? '#FF6666' : '#4ACA9A', minWidth: 38 }}>
+                    <span style={{ fontWeight: 600, color: s.result === 'goal' ? RED : '#1D9E75', minWidth: 38 }}>
                       {s.result === 'goal' ? 'But' : 'Arrêt'}
                     </span>
-                    <span style={{ color: '#555', flex: 1 }}>{s.zoneLabel}</span>
-                    <span style={{ color: '#333', fontSize: 11 }}>{s.time}</span>
+                    <span style={{ color: '#999', flex: 1 }}>{s.zoneLabel}</span>
+                    <span style={{ color: '#ccc', fontSize: 11 }}>{s.time}</span>
                     <button onClick={() => deleteShot(s.id)} style={{
-                      background: 'transparent', border: 'none', color: '#333',
+                      background: 'transparent', border: 'none', color: '#ccc',
                       cursor: 'pointer', fontSize: 15, lineHeight: 1, padding: '0 2px'
                     }}
                       onMouseEnter={e => e.target.style.color = RED}
-                      onMouseLeave={e => e.target.style.color = '#333'}
+                      onMouseLeave={e => e.target.style.color = '#ccc'}
                     >×</button>
                   </div>
                 ))}
@@ -339,8 +339,8 @@ export default function Session({ user }) {
             </div>
 
             {total > 0 && (
-              <div style={{ background: G1, border: '0.5px solid #222', borderRadius: 14, padding: '1rem' }}>
-                <div style={{ fontSize: 11, color: '#666', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 10, display: 'flex', alignItems: 'center', gap: 6 }}>
+              <div style={{ background: G1, border: '1px solid #e0e0e0', borderRadius: 14, padding: '1rem' }}>
+                <div style={{ fontSize: 11, color: '#999', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 10, display: 'flex', alignItems: 'center', gap: 6 }}>
                   <span style={{ width: 3, height: 12, background: RED, borderRadius: 2, display: 'inline-block' }} />
                   Détail par zone
                 </div>
@@ -348,12 +348,12 @@ export default function Session({ user }) {
                   const pct = Math.round((z.goals / z.total) * 100);
                   return (
                     <div key={zid} style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6, fontSize: 12 }}>
-                      <span style={{ color: '#555', width: 80, flexShrink: 0 }}>{ZONES[zid].label}</span>
-                      <div style={{ flex: 1, height: 6, background: '#1A1A1A', borderRadius: 3, overflow: 'hidden' }}>
+                      <span style={{ color: '#999', width: 80, flexShrink: 0 }}>{ZONES[zid].label}</span>
+                      <div style={{ flex: 1, height: 6, background: '#f0f0f0', borderRadius: 3, overflow: 'hidden' }}>
                         <div style={{ width: pct + '%', height: '100%', background: pct > 50 ? RED : '#1D9E75', borderRadius: 3 }} />
                       </div>
-                      <span style={{ color: pct > 50 ? '#FF6666' : '#4ACA9A', fontWeight: 600, width: 32, textAlign: 'right' }}>{pct}%</span>
-                      <span style={{ color: '#333', width: 30 }}>{z.total}T</span>
+                      <span style={{ color: pct > 50 ? RED : '#1D9E75', fontWeight: 600, width: 32, textAlign: 'right' }}>{pct}%</span>
+                      <span style={{ color: '#ccc', width: 30 }}>{z.total}T</span>
                     </div>
                   );
                 })}
