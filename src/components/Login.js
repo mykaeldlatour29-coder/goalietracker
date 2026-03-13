@@ -43,4 +43,43 @@ export default function Login() {
           </div>
           <div>
             <div style={{ fontSize: 20, fontWeight: 700, color: '#111' }}>Goalie Tracker</div>
-            <div style={{ fontSize: 12, color: '#999', marginTop: 2 }}>Entraîneme
+            <div style={{ fontSize: 12, color: '#999', marginTop: 2 }}>Entraînement gardien de but</div>
+          </div>
+        </div>
+
+        <div style={{ fontSize: 15, fontWeight: 600, color: '#111', marginBottom: 20 }}>
+          {isNew ? 'Créer un compte' : 'Connexion'}
+        </div>
+
+        {error && <div style={{ background: '#fff0f0', border: '1px solid #ffcccc', borderRadius: 8, padding: '10px 14px', fontSize: 13, color: '#CC1111', marginBottom: 14 }}>{error}</div>}
+
+        <label style={{ display: 'block', fontSize: 12, color: '#999', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.06em' }}>Courriel</label>
+        <input
+          style={{ width: '100%', background: '#f8f8f8', border: '1px solid #e0e0e0', borderRadius: 8, padding: '10px 14px', fontSize: 14, color: '#111', marginBottom: 14, outline: 'none' }}
+          type="email" value={email} placeholder="coach@hockey.ca"
+          onChange={e => setEmail(e.target.value)}
+          onKeyDown={e => e.key === 'Enter' && handle()}
+        />
+        <label style={{ display: 'block', fontSize: 12, color: '#999', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.06em' }}>Mot de passe</label>
+        <input
+          style={{ width: '100%', background: '#f8f8f8', border: '1px solid #e0e0e0', borderRadius: 8, padding: '10px 14px', fontSize: 14, color: '#111', marginBottom: 14, outline: 'none' }}
+          type="password" value={password} placeholder="••••••••"
+          onChange={e => setPassword(e.target.value)}
+          onKeyDown={e => e.key === 'Enter' && handle()}
+        />
+
+        <button style={{ width: '100%', background: '#CC1111', color: '#fff', border: 'none', borderRadius: 8, padding: '11px', fontSize: 14, fontWeight: 600, cursor: 'pointer', marginTop: 4 }}
+          onClick={handle} disabled={loading}>
+          {loading ? 'Chargement...' : isNew ? 'Créer le compte' : 'Se connecter'}
+        </button>
+
+        <div style={{ height: '1px', background: '#eee', margin: '20px 0' }} />
+
+        <button style={{ width: '100%', background: 'transparent', color: '#999', border: '1px solid #e0e0e0', borderRadius: 8, padding: '10px', fontSize: 13, cursor: 'pointer' }}
+          onClick={() => { setIsNew(!isNew); setError(''); }}>
+          {isNew ? 'Déjà un compte ? Se connecter' : "Pas de compte ? S'inscrire"}
+        </button>
+      </div>
+    </div>
+  );
+}
